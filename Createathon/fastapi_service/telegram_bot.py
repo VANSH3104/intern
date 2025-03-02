@@ -6,10 +6,10 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-
-# Your Telegram Bot Token
-TOKEN = "7301213542:AAHjFbFMf6ZYFjN7iKe6gd6yk_YpmgoqtQg"
-
+from dotenv import load_dotenv
+import os
+load_dotenv()
+TOKEN = os.getenv('TOKEN')
 # FastAPI Backend URLs
 FASTAPI_URL = "http://127.0.0.1:8000"
 BACKEND_URL = "http://127.0.0.1:8001"
