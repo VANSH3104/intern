@@ -4,9 +4,18 @@ from database import get_db, Base, engine
 from model import Challenge, Submission, Leaderboard
 from schema import ChallengeCreate, ChallengeResponse, SubmissionCreate, SubmissionResponse, LeaderboardResponse
 from datetime import datetime
-
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
-
+origins = [
+    "http://localhost:5173",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allow specific origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 # Ensure tables are created
 Base.metadata.create_all(bind=engine)
 
@@ -22,6 +31,12 @@ def create_challenge(challenge: ChallengeCreate, db: Session = Depends(get_db)):
 def get_challenges(db: Session = Depends(get_db)):
     return db.query(Challenge).all()
 
+@app.get("/challenges/{challenge_id}", response_model=ChallengeResponse)
+def get_challenge(challenge_id: int, db: Session = Depends(get_db)):
+    challenge = db.query(Challenge).filter(Challenge.id == challenge_id).first()
+    if not challenge:
+        raise HTTPException(status_code=404, detail="Challenge not found")
+    return challenge
 @app.post("/submissions/")
 def submit_output(submission: SubmissionCreate, db: Session = Depends(get_db)):
     challenge = db.query(Challenge).filter(Challenge.id == submission.challenge_id).first()

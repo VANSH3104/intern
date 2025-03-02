@@ -1,30 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
+import Submission from "./pages/Submission";
 
 function App() {
-  interface Challenge {
-    id: number;
-    title: string;
-  }
-
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
-
-  useEffect(() => {
-    const response = axios.get('http://localhost:9000/api/challenges/')
-      .then(response => setChallenges(response.data))
-      .catch(error => console.error(error));
-      console.log(response)
-  }, []);
-
   return (
-    <div>
-      <h1>Challenges</h1>
-      <ul>
-        {challenges.map(challenge => (
-          <li key={challenge?.id}>{challenge?.title}</li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <Routes>
+        {/* Authentication Routes */}
+        <Route path="/" element={<Auth />} />
+        <Route path="/dashboard/:Id" element={<Dashboard />} />
+        <Route path='/submission/:Id/:challengeId' element={<Submission/>} />
+      </Routes>
+    </Router>
   );
 }
 
