@@ -75,10 +75,18 @@ WSGI_APPLICATION = "createathon.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "neondb",
+        "USER": "neondb_owner",
+        "PASSWORD": "npg_tvA5igb1lsKr",
+        "HOST": "ep-misty-morning-a8bheicc-pooler.eastus2.azure.neon.tech",
+        "PORT": "5432",
+        "OPTIONS": {
+            "sslmode": "require",
+        },
     }
 }
+
 
 
 # Password validation
